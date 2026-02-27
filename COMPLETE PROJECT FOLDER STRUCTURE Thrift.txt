@@ -1,0 +1,123 @@
+🏗 COMPLETE PROJECT FOLDER STRUCTURE
+
+We will separate it into:
+
+frontend
+
+backend
+
+database (migration files)
+
+📁 1️⃣ FRONTEND (Next.js + Tailwind)
+premium-ukay-web/
+│
+├── app/
+│   ├── page.tsx                # Homepage
+│   ├── shop/
+│   ├── product/[id]/
+│   ├── cart/
+│   ├── checkout/
+│   ├── account/
+│   ├── orders/
+│   └── admin/
+│       ├── dashboard/
+│       ├── products/
+│       ├── orders/
+│       ├── users/
+│       └── analytics/
+│
+├── components/
+│   ├── layout/
+│   │   ├── Navbar.tsx
+│   │   ├── Footer.tsx
+│   │
+│   ├── cards/
+│   │   ├── ProductCard.tsx
+│   │   ├── OrderCard.tsx
+│   │
+│   ├── forms/
+│   │   ├── LoginForm.tsx
+│   │   ├── CheckoutForm.tsx
+│   │   ├── ProductForm.tsx
+│   │
+│   ├── ui/
+│
+├── lib/
+│   ├── api.ts
+│   ├── supabase.ts
+│   ├── auth.ts
+│
+├── store/
+│   ├── cartStore.ts
+│   ├── userStore.ts
+│
+├── hooks/
+│
+├── types/
+│
+└── middleware.ts              # Route protection
+📁 2️⃣ BACKEND (Express API Server)
+premium-ukay-api/
+│
+├── src/
+│   ├── controllers/
+│   │   ├── product.controller.js
+│   │   ├── order.controller.js
+│   │   ├── payment.controller.js
+│   │   ├── user.controller.js
+│
+│   ├── services/
+│   │   ├── order.service.js      # transaction logic
+│   │   ├── payment.service.js
+│   │   ├── delivery.service.js
+│
+│   ├── routes/
+│   │   ├── product.routes.js
+│   │   ├── order.routes.js
+│   │   ├── payment.routes.js
+│   │   ├── user.routes.js
+│
+│   ├── middleware/
+│   │   ├── auth.middleware.js
+│   │   ├── admin.middleware.js
+│   │   ├── rateLimit.js
+│
+│   ├── utils/
+│   │   ├── logger.js
+│   │   ├── validator.js
+│
+│   ├── config/
+│   │   ├── supabase.js
+│
+│   └── app.js
+│
+├── .env
+├── package.json
+└── server.js
+📁 3️⃣ DATABASE (Supabase SQL Migrations)
+database/
+│
+├── 001_create_users.sql
+├── 002_create_products.sql
+├── 003_create_orders.sql
+├── 004_create_order_items.sql
+├── 005_create_payments.sql
+├── 006_create_audit_logs.sql
+🔥 SYSTEM FLOW SUMMARY
+
+Customer:
+Browse → Add to Cart → Checkout → Upload Payment → Track Order
+
+Admin:
+Create Product → Verify Payment → Ship via Courier → Add Tracking → Mark Delivered → Analytics
+
+🎯 FULL SYSTEM CAPABILITIES
+
+✔ Physical store integration
+✔ Nationwide delivery (PH)
+✔ Secure payment verification
+✔ Product lock system (anti double-buy)
+✔ Role-based access
+✔ Audit logs
+✔ Scalable PostgreSQL schema
+✔ Production-ready structure

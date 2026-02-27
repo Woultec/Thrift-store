@@ -1,0 +1,231 @@
+🏗 Tables & Relationships
+
+
+👤 users (Handled by Supabase Auth)
+
+column	type	notes
+id	uuid (PK)	from Supabase
+email	text	unique
+role	text	customer / admin
+created_at	timestamp	
+
+👕 products
+
+column		type
+id		uuid (PK)
+name		text
+brand		text
+price		numeric
+size		text
+condition	text
+description	text
+status	available / reserved / sold
+created_at	timestamp
+
+Relationship:
+
+products (1) —— (many) order_items
+
+🛒 orders
+
+column			type
+id			uuid (PK)
+user_id			uuid (FK → users.id)
+total_amount		numeric
+payment_method		text
+payment_status		pending / paid / failed
+delivery_method		courier / pickup
+delivery_status		pending / in_transit / delivered
+courier			text
+tracking_number		text
+shipping_address	text
+created_at		timestamp
+
+Relationship:
+
+users (1) —— (many) orders
+orders (1) —— (many) order_items
+
+📦 order_items
+
+column		type
+id		uuid (PK)
+order_id	uuid (FK → orders.id)
+product_id	uuid (FK → products.id)
+price		numeric
+
+📤 payments (optional but recommended for audit)
+column		type
+id		uuid
+order_id	uuid
+proof_url	text
+verified_by	uuid (admin)
+verified_at	timestamp
+
+🧠 Key Constraints (Important sa Ukay)
+
+1️⃣ product.status must be updated inside transaction
+2️⃣ Only one product per order_item for ukay
+3️⃣ Prevent double checkout (transaction required)
+
+//SQL protection example:
+
+BEGIN;
+
+SELECT status FROM products WHERE id = 'uuid' FOR UPDATE;
+
+-- if status != available → rollback
+
+UPDATE products SET status = 'reserved'
+WHERE id = 'uuid';
+
+INSERT INTO orders (...);
+
+COMMIT;//
+
+🔐 SECURE ARCHITECTURE PLAN (Anti-Hack / Anti-Fraud)
+🧱 1️⃣ Authentication Security
+
+Use Supabase Auth OR JWT + Refresh Token strategy.
+
+Recommendations:
+
+✔ Password hashed (bcrypt)
+✔ Access token short life (15m)
+✔ Refresh token rotation
+✔ HttpOnly cookies only
+✔ Email verification required
+
+🔒 2️⃣ Row Level Security (Supabase)
+
+Enable RLS.
+
+Example:
+
+Customer can only see their orders:
+
+//CREATE POLICY "Users can view own orders"
+ON orders
+FOR SELECT
+USING (auth.uid() = user_id);
+
+Admin access:
+
+CREATE POLICY "Admin full access"
+ON orders
+FOR ALL
+USING (
+  EXISTS (
+    SELECT 1 FROM users
+    WHERE users.id = auth.uid()
+    AND users.role = 'admin'
+  )
+);//
+
+🛡 3️⃣ API Security (Express Layer)
+
+✔ Rate limiting (prevent spam)
+✔ Helmet middleware
+✔ CORS strict origin
+✔ Input validation (Zod / Joi)
+✔ Sanitize inputs
+✔ Never expose service_role key to frontend
+
+Example:
+//
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+}))
+//
+
+💳 4️⃣ Payment Fraud Prevention
+
+For PH manual payments:
+
+✔ Require screenshot proof upload
+✔ Verify reference number
+✔ Store proof image in Supabase Storage
+✔ Log admin verifier ID
+✔ Prevent status change without admin role
+
+Never allow frontend to directly update:
+
+payment_status = 'paid'
+
+Only backend with admin auth.
+
+🚨 5️⃣ Anti Double Purchase (Critical sa Ukay)
+
+Use:
+
+✔ PostgreSQL transaction
+✔ “FOR UPDATE” locking
+✔ Status check before insert
+
+Without this, dalawang user makakabili ng isang item.
+
+📦 6️⃣ Delivery Security
+
+✔ Tracking number cannot be edited after delivery
+✔ Only admin can update delivery_status
+✔ Log delivery status changes
+
+Add audit log table:
+
+audit_logs
+- id
+- action
+- user_id
+- order_id
+- timestamp
+
+🌐 7️⃣ Infrastructure Security
+
+Frontend → Vercel
+Backend → Render / Railway
+Database → Supabase
+
+Checklist:
+
+✔ HTTPS enforced
+✔ Environment variables protected
+✔ Enable Supabase RLS
+✔ Use .env in backend only
+✔ Separate dev & prod database
+
+🔥 8️⃣ Production Security Upgrade (Later Stage)
+
+Phase 2:
+
+✔ Cloudflare firewall
+✔ WAF rules
+✔ Auto backup database daily
+✔ Monitoring (Sentry)
+✔ Admin 2FA
+
+
+🏗 Final Secure Architecture
+User
+ ↓
+Next.js Frontend
+ ↓ (JWT / Cookie)
+Express API
+ ↓
+Supabase (PostgreSQL + RLS)
+ ↓
+Storage (Proof images)
+ ↓
+Courier (LBC/J&T etc.)
+
+
+🎯 What Makes This “Production-Ready”
+
+✔ Proper relational schema
+✔ Transaction-based product locking
+✔ Secure authentication
+✔ Role-based access control
+✔ Audit logging
+✔ Delivery state control
+✔ Scalable PostgreSQL structure
+✔ Ready for nationwide PH shipping

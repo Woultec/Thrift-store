@@ -1,0 +1,182 @@
+🧩 COMPLETE FEATURE LIST
+👑 ADMIN (CEO ROLE)
+🛍 Product Management
+
+Add product
+
+Upload multiple images (Supabase Storage)
+
+Edit product details
+
+Mark as:
+
+available
+
+reserved
+
+sold
+
+Archive product
+
+Mark “Sold Offline” (physical store integration)
+
+📦 Order Management
+
+View all orders
+
+Filter by:
+
+payment status
+
+delivery status
+
+courier
+
+Approve / reject payment
+
+Update:
+
+payment_status
+
+delivery_status
+
+Input tracking number
+
+Assign courier (LBC, J&T, 2GO, Grab)
+
+Mark as delivered
+
+💳 Payment Verification
+
+View uploaded proof
+
+Verify reference number
+
+Approve / reject payment
+
+Record who verified (audit log)
+
+🚚 Delivery Control
+
+Update:
+
+pending → in_transit → delivered
+
+Add estimated delivery date
+
+Edit shipping info (if not shipped yet)
+
+Delivery status logs (history tracking)
+
+📊 Dashboard Analytics
+
+Total sales (daily / weekly / monthly)
+
+Total products sold
+
+Pending payments
+
+Orders in transit
+
+Top brands
+
+Inventory left
+
+👤 User Management
+
+View all users
+
+Change role (customer → admin)
+
+Deactivate account
+
+View purchase history per user
+
+🔒 Security Controls
+
+View audit logs
+
+Enable / disable product
+
+Manual override order (admin only)
+
+Export reports (CSV)
+
+🛒 CUSTOMER FEATURES
+👕 Shopping
+
+Browse products
+
+Filter by:
+
+brand
+
+size
+
+price
+
+condition
+
+View product details
+
+See status:
+
+available
+
+sold
+
+🛍 Cart
+
+Add to cart
+
+Remove from cart
+
+Update cart
+
+View total with shipping fee
+
+💳 Checkout
+
+Select:
+
+Delivery method (Courier / Pickup)
+
+Courier (LBC / J&T / 2GO / Grab)
+
+Payment method (GCash / Maya / COD / Bank)
+
+Enter shipping address
+
+Confirm order
+
+💰 Payment
+
+Upload proof of payment
+
+View payment status
+
+Get confirmation email
+
+📦 Order Tracking
+
+View:
+
+tracking number
+
+courier
+
+delivery status
+
+Click tracking link
+
+Order history
+
+👤 Account
+
+Update profile
+
+Change password
+
+View previous orders
+
+Cancel order (if not shipped yet)
